@@ -1,0 +1,342 @@
+$engine: 3
+$minFxVersion: 13165
+$onesync: on
+name: fl_esx_recipe
+version: 1.1.0
+author: Csoki&Adam
+description: FiveM Land - ESX Legacy Recipe
+
+tasks:
+  ## Download default CFX resources
+  - action: download_github
+    src: https://github.com/citizenfx/cfx-server-data
+    ref: master
+    subpath: resources
+    dest: ./resources/[cfx-default]
+
+  ## bob74_ipl
+  - action: download_github
+    src: https://github.com/Bob74/bob74_ipl
+    ref: master
+    dest: ./resources/bob74_ipl
+
+  ## Download FiveM Land 'recipes' repo
+  - action: download_github
+    src: https://github.com/fivemland/recipes
+    ref: main
+    dest: ./tmp/recipe
+
+  - action: move_path
+    src: ./tmp/recipe/server.cfg
+    dest: ./server.cfg
+
+  - action: move_path
+    src: ./tmp/recipe/fivemland.png
+    dest: ./fivemland.png
+
+  - action: connect_database
+
+  ## Download esx core
+  - action: download_github
+    src: src: https://github.com/esx-framework/esx-core
+    ref: main
+    dest: ./tmp/core
+
+  - action: move_path
+    src: ./tmp/core/[core]
+    dest: ./resources/[core]
+
+  - action: remove_path
+    path: ./resources/[core]/esx_multicharacter
+
+  - action: replace_string
+    file: ./resources/[core]/es_extended/shared/config/main.lua
+    search: 'Config.CustomInventory = false'
+    replace: 'Config.CustomInventory = "ox"'
+
+  - action: query_database
+    file: ./tmp/core/[SQL]/legacy.sql
+
+  ## Download esx-addons
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_addonaccount
+    ref: main
+    dest: ./tmp/addons/esx_addonaccount
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_addoninventory
+    ref: main
+    dest: ./tmp/addons/esx_addoninventory
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_datastore
+    ref: main
+    dest: ./tmp/addons/esx_datastore
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_policejob
+    ref: main
+    dest: ./tmp/addons/esx_policejob
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_service
+    ref: main
+    dest: ./tmp/addons/esx_service
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_rpchat
+    ref: main
+    dest: ./tmp/addons/esx_rpchat
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_basicneeds
+    ref: main
+    dest: ./tmp/addons/esx_basicneeds
+
+  - action: download_file
+    path: ./tmp/files/esx_hud.zip
+    url: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_hud/releases/latest/download/esx_hud.zip
+  - action: unzip
+    dest: ./tmp/addons
+    src: ./tmp/files/esx_hud.zip
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_optionalneeds
+    ref: main
+    dest: ./tmp/addons/esx_optionalneeds
+
+  - action: waste_time # prevent github throttling
+    seconds: 5
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_property
+    ref: main
+    dest: ./tmp/addons/esx_property
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_dmvschool
+    ref: main
+    dest: ./tmp/addons/esx_dmvschool
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_barbershop
+    ref: main
+    dest: ./tmp/addons/esx_barbershop
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_taxijob
+    ref: main
+    dest: ./tmp/addons/esx_taxijob
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_billing
+    ref: main
+    dest: ./tmp/addons/esx_billing
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_drugs
+    ref: main
+    dest: ./tmp/addons/esx_drugs
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_garage
+    ref: main
+    dest: ./tmp/addons/esx_garage
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_vehicleshop
+    ref: main
+    dest: ./tmp/addons/esx_vehicleshop
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_joblisting
+    ref: main
+    dest: ./tmp/addons/esx_joblisting
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_banking
+    ref: main
+    dest: ./tmp/addons/esx_banking
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_lscustom
+    ref: main
+    dest: ./tmp/addons/esx_lscustom
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_society
+    ref: main
+    dest: ./tmp/addons/esx_society
+
+  - action: waste_time # prevent github throttling
+    seconds: 5
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_license
+    ref: main
+    dest: ./tmp/addons/esx_license
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_jobs
+    ref: main
+    dest: ./tmp/addons/esx_jobs
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_ambulancejob
+    ref: main
+    dest: ./tmp/addons/esx_ambulancejob
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_mechanicjob
+    ref: main
+    dest: ./tmp/addons/esx_mechanicjob
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_animations
+    ref: main
+    dest: ./tmp/addons/esx_animations
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_boat
+    ref: main
+    dest: ./tmp/addons/esx_boat
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_status
+    ref: main
+    dest: ./tmp/addons/esx_status
+
+  - action: download_github
+    src: https://github.com/esx-framework/ESX-Legacy-Addons/tree/main/%5Besx_addons%5D/esx_sit
+    ref: main
+    dest: ./tmp/addons/esx_sit
+
+  - action: move_path
+    src: ./tmp/addons/
+    dest: ./resources/[esx_addons]
+
+  ## oxmysql
+  - action: download_file
+    url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
+    path: ./tmp/oxmysql.zip
+  - action: unzip
+    src: ./tmp/oxmysql.zip
+    dest: ./resources/[ox]
+
+  ## ox_inventory
+  - action: download_file
+    url: https://github.com/overextended/ox_inventory/releases/latest/download/ox_inventory.zip
+    path: ./tmp/ox_inventory.zip
+  - action: unzip
+    src: ./tmp/ox_inventory.zip
+    dest: ./resources/[ox]
+
+  ## ox_lib
+  - action: download_file
+    url: https://github.com/overextended/ox_lib/releases/latest/download/ox_lib.zip
+    path: ./tmp/ox_lib.zip
+
+  - action: unzip
+    src: ./tmp/ox_lib.zip
+    dest: ./resources/[ox]
+
+  ## ox_fuel
+  - action: download_github
+    src: https://github.com/overextended/ox_fuel
+    ref: main
+    dest: ./resources/[ox]/ox_fuel
+
+  ## appearance
+  - action: download_file
+    url: https://github.com/iLLeniumStudios/illenium-appearance/releases/latest/download/illenium-appearance.zip
+    path: ./tmp/illenium-appearance.zip
+  - action: unzip
+    src: ./tmp/illenium-appearance.zip
+    dest: ./resources
+
+  - action: query_database
+    file: ./resources/illenium-appearance/sql/management_outfits.sql
+
+  - action: query_database
+    file: ./resources/illenium-appearance/sql/player_outfit_codes.sql
+
+  - action: query_database
+    file: ./resources/illenium-appearance/sql/player_outfits.sql
+
+  - action: query_database
+    file: ./resources/illenium-appearance/sql/playerskins.sql
+
+  ## npwd
+  - action: download_file
+    url: https://github.com/project-error/npwd/releases/latest/download/npwd.zip
+    path: ./tmp/npwd.zip
+  - action: unzip
+    src: ./tmp/npwd.zip
+    dest: ./resources
+
+  - action: query_database
+    file: ./resources/npwd/import.sql
+
+  - action: replace_string
+    file: ./resources/npwd/config.json
+    search: '"useResourceIntegration": false'
+    replace: '"useResourceIntegration": true'
+
+  - action: replace_string
+    file: ./resources/npwd/config.json
+    search: '"level": "silly"'
+    replace: '"level": "error"'
+
+  - action: replace_string
+    file: ./resources/npwd/config.json
+    search: '"defaultLanguage": "en"'
+    replace: '"defaultLanguage": "hu"'
+
+  ## pma-voice
+  - action: download_github
+    src: https://github.com/AvarianKnight/pma-voice
+    ref: main
+    dest: ./resources/pma-voice
+
+  ## screenshot-basic
+  - action: download_github
+    src: https://github.com/project-error/screenshot-basic
+    ref: master
+    dest: ./resources/screenshot-basic
+
+  ## FiveM Land scripts
+  - action: download_github
+    src: https://github.com/fivemland/fl_nametag
+    ref: main
+    dest: ./resources/[fivemland]/fl_nametag
+
+  - action: download_github
+    src: https://github.com/fivemland/fl_adminmenu
+    ref: main
+    dest: ./resources/[fivemland]/fl_adminmenu
+
+  - action: download_github
+    src: https://github.com/fivemland/fl_spectate
+    ref: main
+    dest: ./resources/[fivemland]/fl_spectate
+
+  - action: download_github
+    src: https://github.com/fivemland/fl_punishment
+    ref: main
+    dest: ./resources/[fivemland]/fl_punishment
+
+  - action: download_github
+    src: https://github.com/fivemland/fl_scoreboard
+    ref: main
+    dest: ./resources/[fivemland]/fl_scoreboard
+
+  ## cleanup
+  - action: remove_path
+    path: ./tmp
+  - action: remove_path
+    path: ./resources/[core]/esx_skin
+  - action: remove_path
+    path: ./resources/[core]/skinchanger
+  - action: remove_path
+    path: ./resources/[core]/esx_example
